@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Overwatch Stats</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="user_name">User Name</string>
+    <string name="tag">TAG</string>
+    <string name="hash_tag">#</string>
+    <string name="welcome_please_search_for_a_player">Welcome! Please Search for a Player!</string>
+    <string name="search">Search</string>
+    <string name="toolbar_icon">Toolbar Icon</string>
+    <string name="welcome_message">Add and remove your friend and your favorite players ot continuously track their stats!</string>
+    <string name="search_icon">search icon</string>
+</resources>

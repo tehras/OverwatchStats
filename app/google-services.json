@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1019022448556",
+    "firebase_url": "https://overwatch-stats-eb504.firebaseio.com",
+    "project_id": "overwatch-stats-eb504",
+    "storage_bucket": "overwatch-stats-eb504.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019022448556:android:d13bcc8350eba9e1",
+        "android_client_info": {
+          "package_name": "com.github.tehras.overwatchstats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019022448556-6ttg7cdheuf8doo8fkl0d181f76c0krs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi9gFz_qZDjO11MvbfSXnxHtqGZ9pTta0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/bottom_toolbar_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bottom_toolbar_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-24dp"
+        app:fabSize="normal"
+        tools:src="@drawable/ic_search" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_bottom_toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:elevation="@dimen/medium_elevation">
+
+        <LinearLayout
+            android:id="@+id/bottom_bottom_toolbar_layout_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <com.github.tehras.overwatchstats.views.BottomToolbarButton
+                android:id="@+id/bottom_home_button"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottom_toolbar_height"
+                android:layout_weight="15"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:src="@drawable/ic_home"
+                app:showText="false"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <com.github.tehras.overwatchstats.views.BottomToolbarButton
+                android:id="@+id/bottom_toolbar_button_1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottom_toolbar_height"
+                android:layout_weight="50"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                tools:src="@drawable/ic_favorite"
+                tools:text="Label 1" />
+
+            <com.github.tehras.overwatchstats.views.BottomToolbarButton
+                android:id="@+id/bottom_toolbar_button_2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottom_toolbar_height"
+                android:layout_weight="50"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                tools:src="@drawable/ic_favorite"
+                tools:text="Label 1" />
+
+            <com.github.tehras.overwatchstats.views.BottomToolbarButton
+                android:id="@+id/bottom_toolbar_settings"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottom_toolbar_height"
+                android:layout_weight="15"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:src="@drawable/ic_more"
+                app:showText="false"
+                tools:layout_editor_absoluteX="377dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_toolbar_sliding_bar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignTop="@+id/bottom_bottom_toolbar_layout_child"
+            android:background="@color/colorAccent"
+            android:orientation="vertical" />
+    </RelativeLayout>
+</RelativeLayout>
