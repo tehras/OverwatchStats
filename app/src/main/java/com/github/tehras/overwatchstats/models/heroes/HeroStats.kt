@@ -1,13 +1,20 @@
 package com.github.tehras.overwatchstats.models.heroes
 
+import io.realm.RealmList
+import io.realm.RealmObject
 import java.io.Serializable
-import java.util.*
 
 /**
  * Created by tehras on 8/21/16.
  *
  * Hero Stats
  */
-class HeroStats : Serializable {
-    var map: HashMap<String, String>? = null
+open class HeroStats : Serializable, RealmObject() {
+    var map: RealmList<HeroMap>? = null
+
+}
+
+open class HeroMap : RealmObject() {
+    var key: String? = null
+    var value: String? = null
 }

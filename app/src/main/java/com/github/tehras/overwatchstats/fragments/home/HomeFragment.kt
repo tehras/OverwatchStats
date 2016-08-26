@@ -42,7 +42,8 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
                 if (response.status == Response.ResponseStatus.SUCCESS) {
                     if (response.parsingObject is OWAPIUser) {
                         Log.i(com.github.tehras.overwatchstats.exts.TAG, "parsing success")
-                        (activity as AppCompatActivity).startFragment(UserDisplayFragment.create(response.parsingObject as OWAPIUser), false)
+                        (response.parsingObject as OWAPIUser).addToRealm()
+                        startUserFragment(response.parsingObject as OWAPIUser)
                     } else {
                         Snackbar.make(view as View, "No User Found", Snackbar.LENGTH_SHORT).show()
                     }
@@ -50,8 +51,21 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
                 activity.hideLoading()
                 executed = false
             }
+
+            override fun onDbResponse(obj: Any?) {
+                super.onDbResponse(obj)
+
+                if (obj is OWAPIUser) {
+                    startUserFragment(obj)
+                    activity.hideLoading()
+                }
+            }
         })
         executed = true
+    }
+
+    fun startUserFragment(user: OWAPIUser) {
+        (activity as AppCompatActivity).startFragment(UserDisplayFragment.create(user), false)
     }
 
     val TAG = "HomeFragment"
@@ -76,8 +90,8 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
         activity.hideSearchBar()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         activity.showTwoItemToolbar(viewPager, R.drawable.ic_search, "Favorites", R.drawable.ic_favorite, "Recent", R.drawable.ic_recent, this)
                 ?.showHome(false)?.showSettings(false)
@@ -95,6 +109,7 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
+        Log.d(TAG, "HomeFragment on CreateView")
         viewPager?.adapter = FragmentPager(fragmentManager, 2, this)
 
         return v

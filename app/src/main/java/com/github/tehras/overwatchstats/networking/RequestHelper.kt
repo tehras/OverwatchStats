@@ -3,6 +3,7 @@ package com.github.tehras.overwatchstats.networking
 import android.os.AsyncTask
 import com.github.tehras.overwatchstats.models.OWAPIUser
 import com.github.tehras.overwatchstats.models.heroes.Hero
+import com.github.tehras.overwatchstats.networking.realm.generalStatsRequest
 
 /**
  * Created by tehras on 8/17/16.
@@ -22,11 +23,16 @@ fun Runner.usernameSearchRequest(username: String, tag: String, parsingObject: P
 }
 
 fun Runner.generalStatsRequest(user: OWAPIUser, networkResponse: NetworkResponse) {
-    this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalStatsUrl, user, networkResponse))
+    val foundUser = user.generalStatsRequest()
+    if (foundUser != null) {
+        networkResponse.onDbResponse(foundUser)
+    } else {
+        this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalStatsUrl, user, networkResponse))
+    }
 }
 
 fun Runner.generalHeroesRequest(user: OWAPIUser, networkResponse: NetworkResponse) {
-    this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalHeroesUrl, user, networkResponse))
+    this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalHeroesUrl, OWAPIUser(), networkResponse))
 }
 
 fun Runner.champHeroRequest(user: OWAPIUser, hero: Hero, networkResponse: NetworkResponse) {

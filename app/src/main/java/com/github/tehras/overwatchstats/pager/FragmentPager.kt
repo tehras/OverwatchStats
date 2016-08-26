@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter
  */
 class FragmentPager(fm: FragmentManager?, val fragmentCount: Int, val fragmentCallback: FragmentCallback) : FragmentPagerAdapter(fm) {
 
-
     override fun getItem(position: Int): Fragment {
         return fragmentCallback.getItem(position)
     }

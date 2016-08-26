@@ -49,8 +49,9 @@ class MainActivity : BaseActivity() {
         } else if (mLoadingLayout?.visibility == View.VISIBLE) {
             hideLoading()
             client?.dispatcher()?.cancelAll()
-
-        } else
-            super.onBackPressed()
+        } else if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStackImmediate()
+        }
+        super.onBackPressed()
     }
 }

@@ -21,11 +21,11 @@ fun AppCompatActivity.startFragment(fragment: Fragment, first: Boolean) {
             .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top)
 
     if (first)
-        tran.add(R.id.fragment_container, fragment, fragment.tag)
+        tran.add(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
     else
-        tran.replace(R.id.fragment_container, fragment, fragment.tag)
+        tran.replace(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
 
-    tran.addToBackStack(fragment.tag)
+    tran.addToBackStack(fragment.javaClass.simpleName)
             .commit()
 }
 

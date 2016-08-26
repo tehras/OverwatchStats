@@ -3,6 +3,8 @@ package com.github.tehras.overwatchstats.models.heroes
 import android.util.Log
 import com.github.tehras.overwatchstats.exts.TAG
 import com.github.tehras.overwatchstats.networking.ParsingObject
+import io.realm.RealmList
+import io.realm.RealmObject
 import org.json.JSONObject
 import java.io.Serializable
 import java.util.*
@@ -12,13 +14,14 @@ import java.util.*
  *
  * Heroes
  */
-class Heroes : Serializable, ParsingObject {
+open class Heroes() : Serializable, ParsingObject, RealmObject() {
+
     override fun parse(response: String) {
 
     }
 
     @SuppressWarnings("UNUSED")
-    constructor(json: String) {
+    constructor(json: String) : this() {
         val reader = JSONObject(json)
 
         if (reader.has("heroes")) {
@@ -28,7 +31,7 @@ class Heroes : Serializable, ParsingObject {
                 val hero = obj.getDouble(it)
 
                 if (heroes == null)
-                    heroes = ArrayList()
+                    heroes = RealmList<Hero>()
 
                 heroes!!.add(Hero(it, hero))
             }
@@ -41,5 +44,5 @@ class Heroes : Serializable, ParsingObject {
         }
     }
 
-    var heroes: ArrayList<Hero>? = null
+    var heroes: RealmList<Hero>? = null
 }

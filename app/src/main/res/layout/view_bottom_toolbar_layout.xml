@@ -83,7 +83,7 @@
         <LinearLayout
             android:id="@+id/bottom_toolbar_sliding_bar"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="4dp"
             android:layout_alignTop="@+id/bottom_bottom_toolbar_layout_child"
             android:background="@color/colorAccent"
             android:orientation="vertical" />

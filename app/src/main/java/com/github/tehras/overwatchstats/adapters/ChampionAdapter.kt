@@ -2,6 +2,7 @@ package com.github.tehras.overwatchstats.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.github.tehras.overwatchstats.R
+import com.github.tehras.overwatchstats.exts.copyField
+import com.github.tehras.overwatchstats.exts.getIndex
+import com.github.tehras.overwatchstats.exts.replace
 import com.github.tehras.overwatchstats.exts.setWinPercentage
 import com.github.tehras.overwatchstats.models.heroes.Hero
 import com.github.tehras.overwatchstats.models.heroes.HeroGeneralStats
@@ -122,8 +126,9 @@ class ChampionAdapter(val heroes: Heroes) : RecyclerView.Adapter<ChampionAdapter
     }
 
     fun updateHero(hero: Hero) {
-        val i = heroes.heroes?.indexOf(hero) ?: -1
+        val i = heroes.heroes?.getIndex(hero) { this.name.equals(it.name) } ?: -1
         if (i != -1) {
+            heroes.heroes?.replace(i = i, s = hero)
             notifyItemChanged(i)
         }
     }

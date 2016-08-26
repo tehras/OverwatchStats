@@ -4,6 +4,8 @@ import com.github.tehras.overwatchstats.models.general_stats.GeneralStats
 import com.github.tehras.overwatchstats.models.heroes.Heroes
 import com.github.tehras.overwatchstats.networking.ParsingObject
 import com.google.gson.Gson
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import org.json.JSONObject
 import java.io.Serializable
 
@@ -12,10 +14,15 @@ import java.io.Serializable
  *
  * OWAPIUser
  */
-class OWAPIUser(val username: String, val tag: String) : ParsingObject, Serializable {
+open class OWAPIUser(var username: String, var tag: String) : ParsingObject, Serializable, RealmObject() {
 
+    constructor() : this("", "")
+
+    @PrimaryKey
+    var _userKey = username + tag
     var generalStats: GeneralStats? = null
     var heroes: Heroes? = null
+    var favorite: Boolean = false
 
     override fun parse(response: String) {
         if (response.isNotEmpty()) {

@@ -2,12 +2,13 @@ package com.github.tehras.overwatchstats.models.heroes
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 import java.io.Serializable
 
 /**
  * Created by tehras on 8/22/16.
  */
-class HeroGeneralStats : Serializable {
+open class HeroGeneralStats : Serializable, RealmObject() {
     @SerializedName("games_won")
     @Expose
     var gamesWon: Double = 0.toDouble()

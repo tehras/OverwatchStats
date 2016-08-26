@@ -2,12 +2,13 @@ package com.github.tehras.overwatchstats.models.general_stats
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 import java.io.Serializable
 
 /**
  * Created by tehras on 8/20/16.
  */
-class OverallStats : Serializable {
+open class OverallStats : Serializable, RealmObject() {
     @SerializedName("avatar")
     @Expose
     var avatar: String? = null

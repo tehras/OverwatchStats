@@ -7,4 +7,8 @@ interface NetworkResponse {
 
     fun onResponse(response: Response, request: Request)
 
+    fun onDbResponse(obj: Any?) {
+        //by default nothing
+    }
+
 }

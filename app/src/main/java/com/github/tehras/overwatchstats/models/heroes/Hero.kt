@@ -7,6 +7,8 @@ import com.github.tehras.overwatchstats.models.configChamps
 import com.github.tehras.overwatchstats.networking.ParsingObject
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
+import io.realm.annotations.Ignore
 import org.json.JSONObject
 import java.io.Serializable
 
@@ -15,13 +17,13 @@ import java.io.Serializable
  *
  * Hero
  */
-class Hero : Serializable, ParsingObject {
-
-    constructor(name: String, played: Double) {
+open class Hero() : Serializable, ParsingObject, RealmObject() {
+    constructor(name: String, played: Double) : this() {
         this.name = name
         this.played = played
     }
 
+    @Ignore
     var type: ConfigChamps.Type? = null
 
     fun getConfirmedType(): ConfigChamps.Type {
@@ -56,4 +58,26 @@ class Hero : Serializable, ParsingObject {
         if (obj.has("hero_stats"))
             heroStats = Gson().fromJson(obj.getJSONObject("hero_stats").toString(), HeroStats::class.java)
     }
+
+    override fun toString(): String {
+        return "Hero(type=$type, name=$name, played=$played, generalStats=$generalStats, heroStats=$heroStats)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as Hero
+
+        Log.d(TAG, "$name - ${other.name}")
+        if (name != other.name) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return name?.hashCode() ?: 0
+    }
+
+
 }

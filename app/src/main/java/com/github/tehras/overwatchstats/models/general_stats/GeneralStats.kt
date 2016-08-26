@@ -1,21 +1,22 @@
 package com.github.tehras.overwatchstats.models.general_stats
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 import java.io.Serializable
 
 /**
  * Created by tehras on 8/20/16.
  */
-class GeneralStats : Serializable {
+open class GeneralStats : Serializable, RealmObject() {
 
     @SerializedName("average_stats")
-    val averageStats: AverageStats? = null
+    var averageStats: AverageStats? = null
     @SerializedName("battletag")
-    val battletag: String? = ""
+    var battletag: String? = ""
     @SerializedName("game_stats")
-    val gameStats: GameStats? = null
+    var gameStats: GameStats? = null
     @SerializedName("overall_stats")
-    val overallStats: OverallStats? = null
+    var overallStats: OverallStats? = null
     @SerializedName("region")
-    val region: String? = "us"
+    var region: String? = "us"
 }
