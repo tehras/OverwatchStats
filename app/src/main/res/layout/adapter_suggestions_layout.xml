@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:elevation="@dimen/medium_elevation"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/suggestion_clickable_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_ripple"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin_small"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin_small">
+
+        <ImageView
+            android:id="@+id/suggestion_icon"
+            android:layout_width="@dimen/title_image_size"
+            android:layout_height="@dimen/title_image_size"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/suggestion_image"
+            tools:src="@drawable/ic_favorite_black" />
+
+        <TextView
+            android:id="@+id/suggestion_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:textColor="@android:color/black"
+            tools:text="Test" />
+
+    </LinearLayout>
+
+</LinearLayout>

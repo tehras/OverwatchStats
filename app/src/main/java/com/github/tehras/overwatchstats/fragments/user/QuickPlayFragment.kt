@@ -1,8 +1,6 @@
-package com.github.tehras.overwatchstats.fragments
+package com.github.tehras.overwatchstats.fragments.user
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +9,8 @@ import android.view.ViewGroup
 import com.github.tehras.overwatchstats.R
 import com.github.tehras.overwatchstats.adapters.ChampionAdapter
 import com.github.tehras.overwatchstats.exts.*
+import com.github.tehras.overwatchstats.fragments.BaseFragment
+import com.github.tehras.overwatchstats.models.GameType
 import com.github.tehras.overwatchstats.models.OWAPIUser
 import com.github.tehras.overwatchstats.models.heroes.Hero
 import com.github.tehras.overwatchstats.models.heroes.Heroes
@@ -22,42 +22,16 @@ import com.github.tehras.overwatchstats.providers.user.HeaderProvider
  *
  * User display
  */
-class UserDisplayFragment : ViewPagerFragment(), HeaderProvider.Provide, NetworkResponse {
+class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkResponse {
+    override fun getUser(): OWAPIUser {
+        return user
+    }
+
+    override fun getGameType(): GameType {
+        return GameType.QUICK // todo later
+    }
+
     private var adapter: ChampionAdapter? = null
-
-    override fun onStart() {
-        super.onStart()
-
-        updateToolbar()
-    }
-
-    private fun updateToolbar() {
-        var icon = R.drawable.ic_favorite
-        if (user.favorite)
-            icon = R.drawable.ic_close_white
-
-        activity.showTwoItemToolbar(viewPager, icon, "Favorites", R.drawable.ic_favorite, "Recent", R.drawable.ic_recent, this)
-                ?.showHome(true)?.showSettings(true)
-    }
-
-    override fun fabPressed(fab: FloatingActionButton) {
-        super.fabPressed(fab)
-
-        //add to favorites
-        val fav = user.favorite
-        getRealmInstance()?.singleTransaction {
-            user.favorite = !fav
-        }
-
-        updateToolbar()
-        if (view != null) {
-            if (!fav)
-                Snackbar.make(view!!, "Added to favorites", Snackbar.LENGTH_SHORT).show()
-            else
-                Snackbar.make(view!!, "Removed from favorites", Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
 
     override fun onResponse(response: Response, request: Request) {
         if (response.status == Response.ResponseStatus.SUCCESS) {
@@ -78,14 +52,6 @@ class UserDisplayFragment : ViewPagerFragment(), HeaderProvider.Provide, Network
         }
     }
 
-    override fun onDbResponse(obj: Any?) {
-        super.onDbResponse(obj)
-
-        if (obj is OWAPIUser) {
-
-        }
-    }
-
     private fun updateAdapter(user: OWAPIUser) {
         //lets get the rest of the heroes...
         Log.d(TAG, "retrieved heroes")
@@ -96,7 +62,8 @@ class UserDisplayFragment : ViewPagerFragment(), HeaderProvider.Provide, Network
         if (needsRefresh) {
             needsRefresh = false
             user.heroes?.heroes?.forEach {
-                Runner().champHeroRequest(user, getNewHero(it) ?: Hero(it.name ?: "", it.played ?: 0.toDouble()), this)
+                if (!(it.played?.isZero() ?: true))
+                    Runner().champHeroRequest(user, getNewHero(it) ?: Hero(it.name ?: "", it.played ?: 0.toDouble()), this)
             }
         }
     }
@@ -105,38 +72,58 @@ class UserDisplayFragment : ViewPagerFragment(), HeaderProvider.Provide, Network
         return Hero(h.name ?: "", h.played ?: 0.toDouble())
     }
 
-    override fun getUser(): OWAPIUser {
-        return user
-    }
-
     private lateinit var user: OWAPIUser
 
     companion object Factory {
         private val BUNDLE_KEY = "bundle_user"
+        private val BUNDLE_FROM_DB = "bundle_from_db"
 
-        fun create(user: OWAPIUser): UserDisplayFragment {
-            user.addToRealm()
-            return UserDisplayFragment().bundle { putString(BUNDLE_KEY, user._userKey) }
+        fun create(userKey: String, fromDb: Boolean): QuickPlayFragment {
+            return QuickPlayFragment().bundle {
+                putString(BUNDLE_KEY, userKey)
+                putBoolean(BUNDLE_FROM_DB, fromDb)
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (arguments != null)
+        if (arguments != null) {
             user = getRealmInstance()?.getFirst(OWAPIUser::class.java, {
                 this.equalTo("_userKey", arguments.getString(BUNDLE_KEY))
             }) ?: OWAPIUser("", "")
+
+            val fromDb = arguments.getBoolean(BUNDLE_FROM_DB)
+
+            if (fromDb) {
+                Runner().generalStatsRequest(user, true, object : NetworkResponse {
+                    override fun onResponse(response: Response, request: Request) {
+                        if (response.status == Response.ResponseStatus.SUCCESS && response.parsingObject is OWAPIUser && (response.parsingObject as OWAPIUser).generalStats != null) {
+                            getRealmInstance()?.singleTransaction {
+                                val generalStats = (response.parsingObject as OWAPIUser).generalStats
+                                generalStats?.addToRealm()
+
+                                user.generalStats = generalStats
+                                provider?.populateAccountHeaderData() //refresh
+                            }
+                        }
+                    }
+                })
+            }
+        }
 
         //lets get the champions..
         if (user.heroes == null)
             Runner().generalHeroesRequest(user, this)
     }
 
+    private var provider: HeaderProvider? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = inflater.inflate(R.layout.fragment_user_layout, container, false)
 
-        HeaderProvider(v, this)
+        provider = HeaderProvider(v, this)
         initRecyclerView(v)
 
         return v

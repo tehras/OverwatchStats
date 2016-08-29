@@ -1,14 +1,14 @@
 package com.github.tehras.overwatchstats.models.profile
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import io.realm.RealmObject
 
 /**
  * Created by tehras on 8/18/16.
  *
  * Data
  */
-class Data : Serializable {
+open class Data : RealmObject() {
     @SerializedName("username")
     var username: String? = ""
     @SerializedName("level")

@@ -1,108 +1,119 @@
 package com.github.tehras.overwatchstats.models
 
+import com.github.tehras.overwatchstats.models.champs.ConfigChamps
 import com.google.gson.annotations.SerializedName
-import org.json.JSONObject
+import io.realm.RealmObject
+import io.realm.annotations.Ignore
 
 /**
  * Created by tehras on 8/18/16.
  */
-class Champion {
-    constructor(name: String) {
-        this.name = name
-    }
+open class Champion(var name: String) : RealmObject() {
+    constructor() : this("")
 
-    lateinit var name: String
     @SerializedName("Eliminations")
     var eliminations: String = ""
     @SerializedName("FinalBlows")
-    val finalBlows: Int = 0
+    var finalBlows: Int = 0
     @SerializedName("SoloKills")
-    val soloKills: Int = 0
+    var soloKills: Int = 0
     @SerializedName("DamageDone")
-    val damageDone: String = ""
+    var damageDone: String = ""
     @SerializedName("ObjectiveKills")
-    val objectiveKills: Int = 0
+    var objectiveKills: Int = 0
     @SerializedName("MultiKills")
-    val multiKills: Int = 0
-    @SerializedName("MeleeFinalBlows")
-    val meleeFinalBlows: Int = 0
+    var multiKills: Int = 0
     @SerializedName("CriticalHits")
-    val criticalHits: String = ""
+    var criticalHits: String = ""
     @SerializedName("CriticalHitAccuracy")
-    val criticalHitAccuracy: String = ""
+    var criticalHitAccuracy: String = ""
     @SerializedName("EliminationsperLife")
-    val eliminationsPerLife: Double = 0.toDouble()
+    var eliminationsPerLife: Double = 0.toDouble()
     @SerializedName("WeaponAccuracy")
-    val weaponAccuracy: String = ""
+    var weaponAccuracy: String = ""
     @SerializedName("HealingDone")
-    val healingDone: String = ""
+    var healingDone: String = ""
     @SerializedName("SelfHealing")
-    val selfHealing: String = ""
+    var selfHealing: String = ""
     @SerializedName("Eliminations-MostinLife")
-    val mostElimsInLife: Int = 0
+    var mostElimsInLife: Int = 0
     @SerializedName("DamageDone-MostinLife")
-    val mostDamageDoneInLife: String = ""
+    var mostDamageDoneInLife: String = ""
     @SerializedName("HealingDone-MostinLife")
-    val mostHealingDoneInLife: String = ""
+    var mostHealingDoneInLife: String = ""
     @SerializedName("DamageDone-MostinGame")
-    val mostDamageDoneInGame: String = ""
+    var mostDamageDoneInGame: String = ""
     @SerializedName("HealingDone-MostinGame")
-    val mostHealingDoneInGame: String = ""
+    var mostHealingDoneInGame: String = ""
     @SerializedName("Eliminations-MostinGame")
-    val mostEliminationsInGame: Int = 0
+    var mostEliminationsInGame: Int = 0
     @SerializedName("FinalBlows-MostinGame")
-    val mostInGameFinalBlows: Int = 0
+    var mostInGameFinalBlows: Int = 0
     @SerializedName("ObjectiveKills-MostinGame")
-    val mostInGameObjectiveKils: Int = 0
+    var mostInGameObjectiveKils: Int = 0
     @SerializedName("ObjectiveTime-MostinGame")
-    val mostInGameObjectiveTime: String = ""
+    var mostInGameObjectiveTime: String = ""
     @SerializedName("SoloKills-MostinGame")
-    val mostInGameSoloKills: Int = 0
+    var mostInGameSoloKills: Int = 0
     @SerializedName("CriticalHits-MostinGame")
-    val mostInGameCriticalHits: String = ""
+    var mostInGameCriticalHits: String = ""
     @SerializedName("SelfHealing-MostinGame")
-    val mostInGameSelfHealing: String = ""
+    var mostInGameSelfHealing: String = ""
     @SerializedName("Deaths-Average")
-    val averageDeaths: Double = 0.toDouble()
+    var averageDeaths: Double = 0.toDouble()
     @SerializedName("SoloKills-Average")
-    val averageSoloKills: Double = 0.toDouble()
+    var averageSoloKills: Double = 0.toDouble()
     @SerializedName("ObjectiveTime-Average")
-    val objectiveTimeAverage: String = "00:00"
+    var objectiveTimeAverage: String = "00:00"
     @SerializedName("ObjectiveKills-Average")
-    val objectiveKillsAverage: Double = 0.toDouble()
+    var objectiveKillsAverage: Double = 0.toDouble()
     @SerializedName("HealingDone-Average")
-    val healingDoneAverage: String = 0.toString()
+    var healingDoneAverage: String = 0.toString()
     @SerializedName("FinalBlows-Average")
-    val finalBlowsAverage: String = 0.toString()
+    var finalBlowsAverage: String = 0.toString()
     @SerializedName("Eliminations-Average")
-    val eliminationsAverage: String = 0.toString()
+    var eliminationsAverage: String = 0.toString()
     @SerializedName("DamageDone-Average")
-    val damageDoneAverage: String = 0.toString()
+    var damageDoneAverage: String = 0.toString()
     @SerializedName("Deaths")
-    val deaths: Int = 0
+    var deaths: Int = 0
     @SerializedName("Medals-Bronze")
-    val bronzeMedals: Int = 0
+    var bronzeMedals: Int = 0
     @SerializedName("Medals-Silver")
-    val silverMedals: Int = 0
+    var silverMedals: Int = 0
     @SerializedName("Medals-Gold")
-    val goldMedals: Int = 0
+    var goldMedals: Int = 0
     @SerializedName("Medals")
-    val medals: Int = 0
+    var medals: Int = 0
     @SerializedName("TimePlayed")
-    val timePlayed: String = "0hours"
+    var timePlayed: String = "0hours"
     @SerializedName("GamesPlayed")
-    val gamesPlayed: Int = 0
+    var gamesPlayed: Int = 0
     @SerializedName("Cards")
-    val cards: Int = 0
+    var cards: Int = 0
     @SerializedName("GamesWon")
-    val gamesWon: Int = 0
+    var gamesWon: Int = 0
     @SerializedName("ObjectiveTime")
-    val objectiveTime: String = 0.toString()
+    var objectiveTime: String = 0.toString()
     @SerializedName("TimeSpentonFire")
-    val timeSpentOnFire: String = "00:00:00"
+    var timeSpentOnFire: String = "00:00:00"
     @SerializedName("WinPercentage")
-    val winPercentage: String = "00:00:00"
+    var winPercentage: String = "00:00:00"
     @SerializedName("Multikill-Best")
-    val multiKillBest: String = 0.toString()
+    var multiKillBest: String = 0.toString()
+
+    var lastUpdated: Long? = 0.toLong()
+
+    @Ignore
+    var configType: ConfigChamps.Type? = ConfigChamps.Type.ATTACK
+
+    fun getConfirmedType(): ConfigChamps.Type {
+        configChamps?.forEach {
+            if (it.name.equals(name, true))
+                return it.type
+        }
+
+        return ConfigChamps.Type.ATTACK
+    }
 
 }

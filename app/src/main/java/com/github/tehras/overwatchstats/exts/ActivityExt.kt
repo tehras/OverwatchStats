@@ -21,7 +21,7 @@ fun AppCompatActivity.startFragment(fragment: Fragment, first: Boolean) {
             .setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top)
 
     if (first)
-        tran.add(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
+        tran.replace(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
     else
         tran.replace(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
 
@@ -56,9 +56,9 @@ fun Activity.showSearchBar(x: Int, y: Int, callback: SearchLayoutListener): Mate
             }
 
             searchLayout?.show(x, y)
+
             searchBar?.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
                 override fun onButtonClicked(p0: Int) {
-//                    searchBar.hide(x, y)
                 }
 
                 override fun onSearchStateChanged(p0: Boolean) {
@@ -77,7 +77,6 @@ fun Activity.showSearchBar(x: Int, y: Int, callback: SearchLayoutListener): Mate
     }
     return null
 }
-
 
 fun Activity.hideSearchBar() {
     if (this is MainActivity) {

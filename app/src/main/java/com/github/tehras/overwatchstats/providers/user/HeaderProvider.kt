@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.github.tehras.overwatchstats.R
+import com.github.tehras.overwatchstats.models.GameType
 import com.github.tehras.overwatchstats.models.OWAPIUser
 import com.github.tehras.overwatchstats.views.DataWithHint
 import com.github.tehras.overwatchstats.views.UserImageView
@@ -13,7 +14,7 @@ import com.github.tehras.overwatchstats.views.UserImageView
  *
  * Provider for the UserDispayFragment
  */
-class HeaderProvider(val view: View, val provider: Provide) {
+class HeaderProvider(val view: View, var provider: Provide) {
 
     private lateinit var userImage: UserImageView
     private lateinit var userName: TextView
@@ -33,14 +34,14 @@ class HeaderProvider(val view: View, val provider: Provide) {
         losses = view.findViewById(R.id.view_user_layout_losses) as DataWithHint
         timePlayed = view.findViewById(R.id.view_user_layout_time_played) as DataWithHint
 
-        val user = provider.getUser()
 
-        populateAccountHeaderData(user)
+        populateAccountHeaderData()
     }
 
     private val TAG = "HeaderProvider"
 
-    fun populateAccountHeaderData(user: OWAPIUser) {
+    fun populateAccountHeaderData() {
+        val user = provider.getUser()
 
         val avatar = user.generalStats?.overallStats?.avatar
         val outline = null
@@ -59,5 +60,6 @@ class HeaderProvider(val view: View, val provider: Provide) {
 
     interface Provide {
         fun getUser(): OWAPIUser
+        fun getGameType(): GameType
     }
 }

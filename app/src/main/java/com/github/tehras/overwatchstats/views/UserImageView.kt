@@ -31,7 +31,7 @@ class UserImageView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         if (iconUrl != null)
             Picasso.with(context).load(iconUrl).transform(RoundedCornersTransformation(12, 0)).into(mBackground)
         if (outlineUrl != null)
-            Picasso.with(context).load(outlineUrl).into(mOutline)
+            Picasso.with(context).load(outlineUrl).centerCrop().into(mOutline)
 
     }
 

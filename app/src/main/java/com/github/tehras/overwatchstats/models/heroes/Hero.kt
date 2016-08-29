@@ -49,6 +49,10 @@ open class Hero() : Serializable, ParsingObject, RealmObject() {
     var generalStats: HeroGeneralStats? = null
     @SerializedName("hero_stats")
     var heroStats: HeroStats? = null
+    var lastUpdated: Long? = 0.toLong()
+
+    @Ignore
+    var updated: Boolean = false
 
     override fun parse(response: String) {
         val obj = JSONObject(response)
@@ -57,6 +61,9 @@ open class Hero() : Serializable, ParsingObject, RealmObject() {
             generalStats = Gson().fromJson(obj.getJSONObject("general_stats").toString(), HeroGeneralStats::class.java)
         if (obj.has("hero_stats"))
             heroStats = Gson().fromJson(obj.getJSONObject("hero_stats").toString(), HeroStats::class.java)
+
+        updated = true
+        lastUpdated = System.currentTimeMillis()
     }
 
     override fun toString(): String {

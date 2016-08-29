@@ -1,14 +1,14 @@
 package com.github.tehras.overwatchstats.models.profile
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import io.realm.RealmObject
 
 /**
  * Created by tehras on 8/18/16.
  *
  * League
  */
-class League : Serializable {
+open class League : RealmObject() {
     @SerializedName("wins")
     var wins: String? = "0"
     @SerializedName("lost")

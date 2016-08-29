@@ -228,6 +228,7 @@ class BottomToolbarLayout(context: Context?, attrs: AttributeSet?, defStyleAttr:
 
     fun show(animate: Boolean): BottomToolbarLayout {
         if (animate) this.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_slide_in_bottom))
+        if (animate) floatingButton.startAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_popup_enter))
         this.visibility = View.VISIBLE
 
         return this

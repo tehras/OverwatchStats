@@ -5,6 +5,7 @@ import com.github.tehras.overwatchstats.models.heroes.Heroes
 import com.github.tehras.overwatchstats.networking.ParsingObject
 import com.google.gson.Gson
 import io.realm.RealmObject
+import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 import org.json.JSONObject
 import java.io.Serializable
@@ -24,6 +25,9 @@ open class OWAPIUser(var username: String, var tag: String) : ParsingObject, Ser
     var heroes: Heroes? = null
     var favorite: Boolean = false
 
+    @Ignore
+    var updated: Boolean = false
+
     override fun parse(response: String) {
         if (response.isNotEmpty()) {
             val reader = JSONObject(response)
@@ -31,8 +35,6 @@ open class OWAPIUser(var username: String, var tag: String) : ParsingObject, Ser
                 heroes = Heroes(response)
             else
                 generalStats = Gson().fromJson(response, GeneralStats::class.java)
-
-
         }
     }
 

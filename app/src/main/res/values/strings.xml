@@ -1,4 +1,6 @@
 <resources>
+    <string name="history_loading_text">Retrieving Data</string>
+
     <string name="app_name">Overwatch Stats</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="action_settings">Settings</string>
@@ -10,4 +12,9 @@
     <string name="toolbar_icon">Toolbar Icon</string>
     <string name="welcome_message">Add and remove your friend and your favorite players ot continuously track their stats!</string>
     <string name="search_icon">search icon</string>
+    <string name="favorites_favorites_title">Favorites</string>
+    <string name="favorites_recent_title">Recent</string>
+    <string name="favorites_no_favorites_added">No favorite players added yet! Please Search for a player and favorite in order to have the quick access to their profile!</string>
+    <string name="favorites_no_recent_added">No recent players! Please search for a player and they\'ll automatically be added to this list!</string>
+    <string name="suggestion_image">suggestion image</string>
 </resources>

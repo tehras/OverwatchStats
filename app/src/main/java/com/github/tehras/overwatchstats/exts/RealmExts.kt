@@ -27,10 +27,12 @@ fun <T : RealmModel> Realm.getAll(clazz: Class<T>, extraQuery: RealmQuery<T>.() 
     return results
 }
 
-fun <T : RealmList<S>, S : RealmModel> T.replace(s: S, i: Int) {
+fun <T : RealmList<S>, S : RealmModel> T.replace(s: S, i: Int, func: S.() -> Unit) {
     getRealmInstance()?.singleTransaction {
         this@replace.removeAt(i)
-        this@replace.add(i, this.copyToRealm(s))
+        val hero = this.copyToRealm(s)
+        hero.func()
+        this@replace.add(i, hero)
     }
 }
 

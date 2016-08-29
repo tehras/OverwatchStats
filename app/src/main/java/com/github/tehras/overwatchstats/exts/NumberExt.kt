@@ -21,3 +21,7 @@ fun TextView.setWinPercentage(d: Double) {
 
     this.setTextColor(this.context.resources.getColor(color, null))
 }
+
+fun Double.isZero(): Boolean {
+    return this.compareTo(0.toDouble()) == 0
+}

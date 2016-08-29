@@ -1,10 +1,13 @@
 package com.github.tehras.overwatchstats
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.github.tehras.overwatchstats.exts.*
+import com.github.tehras.overwatchstats.fragments.BaseFragment
 import com.github.tehras.overwatchstats.fragments.home.HomeFragment
 import com.github.tehras.overwatchstats.networking.client
 import com.github.tehras.overwatchstats.views.BottomToolbarLayout
@@ -13,6 +16,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 
 class MainActivity : BaseActivity() {
 
+    private val TAG = "MainActivity"
     private var mFragmentContainer: View? = null
     var mSearchView: MaterialSearchBar? = null
     var mSearchParent: LinearLayout? = null
@@ -50,8 +54,23 @@ class MainActivity : BaseActivity() {
             hideLoading()
             client?.dispatcher()?.cancelAll()
         } else if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStackImmediate()
+            Log.d(TAG, "supportFragmentManager.backStackEntryCount ${supportFragmentManager.backStackEntryCount}")
+            Log.d(TAG, "supportFragmentManager.fragments ${supportFragmentManager.fragments}")
+
+            if (supportFragmentManager.backStackEntryCount == 1) {
+                finish()
+                return
+            }
+
+            if (supportFragmentManager.fragments != null) {
+                if (supportFragmentManager.fragments.last() is BaseFragment && (supportFragmentManager.fragments.last() as BaseFragment).onBackPressed()) {
+                    return
+                } else
+                    supportFragmentManager.popBackStackImmediate()
+            }
+        } else {
+            Log.d(TAG, "activity finish")
+            this.finish()
         }
-        super.onBackPressed()
     }
 }

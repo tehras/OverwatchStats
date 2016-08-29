@@ -3,15 +3,15 @@ package com.github.tehras.overwatchstats.models
 import com.github.tehras.overwatchstats.models.profile.Data
 import com.github.tehras.overwatchstats.networking.ParsingObject
 import com.google.gson.Gson
+import io.realm.RealmObject
 import org.json.JSONObject
-import java.io.Serializable
 
 /**
  * Created by tehras on 8/18/16.
  *
  * Profile response
  */
-class Profile : Serializable, ParsingObject {
+open class Profile : ParsingObject, RealmObject() {
     var data: Data? = null
 
     override fun parse(response: String) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.tehras.overwatchstats.R
+import com.github.tehras.overwatchstats.fragments.home.HomeFragment
 import com.github.tehras.overwatchstats.views.BottomToolbarButton
 import com.github.tehras.overwatchstats.views.BottomToolbarLayout
 
@@ -15,21 +16,7 @@ import com.github.tehras.overwatchstats.views.BottomToolbarLayout
  *
  * View Pager Adapter
  */
-open class ViewPagerFragment : BaseFragment(), BottomToolbarLayout.OnClickListener {
-    override fun settingsPressed(settingsButton: BottomToolbarButton) {
-
-    }
-
-    override fun homePressed(homeButton: BottomToolbarButton) {
-        val fm = activity.supportFragmentManager
-        for (i in 0..fm.backStackEntryCount - 1) {
-            if (fm.fragments[i] !is ViewPagerFragment)
-                fm.popBackStack()
-        }
-    }
-
-    override fun fabPressed(fab: FloatingActionButton) {
-    }
+open class ViewPagerFragment : BaseFragment() {
 
     private val TAG: String = "ViewPagerFragment"
 

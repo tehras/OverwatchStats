@@ -2,9 +2,11 @@ package com.github.tehras.overwatchstats.networking
 
 import android.os.AsyncTask
 import android.util.Log
+import okhttp3.CacheControl
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import java.util.*
 
 /**
  * Created by koshkin on 7/4/16.
@@ -13,11 +15,20 @@ import okhttp3.RequestBody
  */
 class Runner : AsyncTask<Request, Void, Response>() {
 
+    init {
+        if (runners == null)
+            runners = ArrayList()
+
+        runners?.add(this)
+    }
+
     var defaultMediaType = MediaType.parse("application/json; charset=utf-8")
 
     override fun onPostExecute(result: Response?) {
         if (request != null)
             request!!.networkResponse.onResponse(result!!, request!!)
+
+        runners?.remove(this)
     }
 
     var request: Request? = null
@@ -67,7 +78,7 @@ class Runner : AsyncTask<Request, Void, Response>() {
 
     private fun defaultBuilder(request: Request): okhttp3.Request.Builder? {
         return okhttp3.Request.Builder()
-                .url(request.url)
+                .url(request.url).cacheControl(CacheControl.FORCE_NETWORK)
     }
 
     private fun getClient(): OkHttpClient {
@@ -84,3 +95,4 @@ class Runner : AsyncTask<Request, Void, Response>() {
 }
 
 var client: OkHttpClient? = null
+var runners: ArrayList<Runner>? = null

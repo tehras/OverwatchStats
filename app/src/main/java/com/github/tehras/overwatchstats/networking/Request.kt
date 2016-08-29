@@ -28,15 +28,16 @@ class Request {
 var region: String = "us/"
 var system: String = "pc/"
 val baseUrl: String = "https://api.lootbox.eu/"
-val quickPlay: String = "quick-play/"
+val quickPlay: String = "/quick-play/"
+val allHeroes: String = "allHeroes/"
 val hero: String = "hero/%s"
-val profile: String = "profile"
+val profile: String = "/profile"
 
 val baseOWAPIurl = "https://owapi.net/api/v2/u/"
-val generalStatsUrl = "stats/general"
+val generalStatsUrl = "/stats/general"
 //https://owapi.net/api/v2/u/SunDwarf-21353/heroes/general
-val generalHeroesUrl = "heroes/general"
+val generalHeroesUrl = "/heroes/general"
 //https://owapi.net/api/v2/u/Aurelius-1648/heroes/reinhardt
-val generalChampUrl = "heroes/%s"
+val generalChampUrl = "/heroes/%s"
 
 

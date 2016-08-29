@@ -2,6 +2,8 @@ package com.github.tehras.overwatchstats.networking
 
 import android.os.AsyncTask
 import com.github.tehras.overwatchstats.models.OWAPIUser
+import com.github.tehras.overwatchstats.models.User
+import com.github.tehras.overwatchstats.models.configChamps
 import com.github.tehras.overwatchstats.models.heroes.Hero
 import com.github.tehras.overwatchstats.networking.realm.generalStatsRequest
 
@@ -10,20 +12,29 @@ import com.github.tehras.overwatchstats.networking.realm.generalStatsRequest
  *
  * Helper
  */
-fun Runner.championsRequest(username: String, tag: String, parsingObject: ParsingObject, callbackObj: NetworkResponse) {
-    val request = Request(Request.Type.GET, baseUrl + system + region + formulateUser(username, tag) + quickPlay + String.format(hero, allHeroes()), parsingObject, callbackObj)
+fun Runner.championsRequest(user: User, callbackObj: NetworkResponse) {
+    val request = Request(Request.Type.GET, baseUrl + system + region + formulateUser(user.username, user.tag) + quickPlay + allHeroes(), User(user.username, user.tag), callbackObj)
 
     this.execute(request)
 }
 
-fun Runner.usernameSearchRequest(username: String, tag: String, parsingObject: ParsingObject, callbackObj: NetworkResponse) {
-    val request = Request(Request.Type.GET, baseUrl + system + region + formulateUser(username, tag) + profile, parsingObject, callbackObj)
-
-    this.execute(request)
+fun Runner.usernameSearchRequest(username: String, tag: String, callbackObj: NetworkResponse) {
+    val user = User(username, tag)
+    val foundUser = user.generalStatsRequest()
+    if (foundUser != null) {
+        callbackObj.onDbResponse(user)
+    } else
+        this.execute(Request(Request.Type.GET, baseUrl + system + region + formulateUser(username, tag) + profile, user, callbackObj))
 }
 
 fun Runner.generalStatsRequest(user: OWAPIUser, networkResponse: NetworkResponse) {
-    val foundUser = user.generalStatsRequest()
+    this.generalStatsRequest(user, false, networkResponse)
+}
+
+fun Runner.generalStatsRequest(user: OWAPIUser, skipDb: Boolean, networkResponse: NetworkResponse) {
+    var foundUser: OWAPIUser? = null
+    if (!skipDb)
+        foundUser = user.generalStatsRequest()
     if (foundUser != null) {
         networkResponse.onDbResponse(foundUser)
     } else {
@@ -42,9 +53,12 @@ fun Runner.champHeroRequest(user: OWAPIUser, hero: Hero, networkResponse: Networ
 //fun Runner.generalChampionsRequest()
 
 fun allHeroes(): String {
-    return "Lucio%2CSoldier76/"
+    var allChamps: String = ""
+    configChamps?.forEachIndexed { i, configChamp -> allChamps += configChamp.name + if (i == (configChamps?.size?.minus(1))) "/" else "," }
+
+    return "hero/$allChamps"
 }
 
-fun formulateUser(username: String, tag: String): Any? {
-    return "$username-$tag/"
+fun formulateUser(username: String, tag: String): String {
+    return "$username-$tag"
 }

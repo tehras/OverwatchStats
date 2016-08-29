@@ -10,13 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.tehras.overwatchstats.R
+import com.github.tehras.overwatchstats.adapters.FavoriteOrRecent
 import com.github.tehras.overwatchstats.exts.*
-import com.github.tehras.overwatchstats.fragments.UserDisplayFragment
 import com.github.tehras.overwatchstats.fragments.ViewPagerFragment
+import com.github.tehras.overwatchstats.fragments.user.UserFragment
 import com.github.tehras.overwatchstats.models.OWAPIUser
 import com.github.tehras.overwatchstats.networking.*
+import com.github.tehras.overwatchstats.networking.realm.getRecents
 import com.github.tehras.overwatchstats.pager.FragmentPager
 import com.mancj.materialsearchbar.MaterialSearchBar
+import io.realm.RealmResults
+import java.util.*
 
 /**
  * Created by tehras on 8/22/16.
@@ -25,6 +29,15 @@ import com.mancj.materialsearchbar.MaterialSearchBar
  */
 class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, SearchLayoutListener {
     private var executed: Boolean = false
+
+    override fun onBackPressed(): Boolean {
+        if (searchBar?.isShown ?: false) {
+            searchBar?.hide()
+            return true
+        }
+
+        return super.onBackPressed()
+    }
 
     override fun onSearchEntered(text: CharSequence?) {
         if (executed)
@@ -43,10 +56,12 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
                     if (response.parsingObject is OWAPIUser) {
                         Log.i(com.github.tehras.overwatchstats.exts.TAG, "parsing success")
                         (response.parsingObject as OWAPIUser).addToRealm()
-                        startUserFragment(response.parsingObject as OWAPIUser)
+                        startUserFragment(response.parsingObject as OWAPIUser, false)
                     } else {
                         Snackbar.make(view as View, "No User Found", Snackbar.LENGTH_SHORT).show()
                     }
+                } else {
+                    Snackbar.make(view as View, "No User Found", Snackbar.LENGTH_SHORT).show()
                 }
                 activity.hideLoading()
                 executed = false
@@ -56,16 +71,18 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
                 super.onDbResponse(obj)
 
                 if (obj is OWAPIUser) {
-                    startUserFragment(obj)
+                    startUserFragment(obj, true)
                     activity.hideLoading()
                 }
             }
         })
         executed = true
+        executed = true
     }
 
-    fun startUserFragment(user: OWAPIUser) {
-        (activity as AppCompatActivity).startFragment(UserDisplayFragment.create(user), false)
+    fun startUserFragment(user: OWAPIUser, fromDb: Boolean) {
+        activity.hideLoading()
+        (activity as AppCompatActivity).startFragment(UserFragment.create(user, fromDb), false)
     }
 
     val TAG = "HomeFragment"
@@ -82,6 +99,20 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
         super.fabPressed(fab)
 
         searchBar = activity?.showSearchBar(fab.getCenterX(), fab.getCenterY(), this)
+        searchBar?.lastSuggestions = getRecentHistorySuggestionsString()
+        searchBar?.enableSearch() // suggestions
+
+    }
+
+    private var lastRecent: RealmResults<OWAPIUser>? = null
+
+    private fun getRecentHistorySuggestionsString(): ArrayList<String> {
+        lastRecent = getRecents()
+
+        val suggestions = ArrayList<String>()
+        lastRecent?.forEach { suggestions.add("${it._userKey}") }
+
+        return suggestions
     }
 
     override fun onStop() {
@@ -101,8 +132,8 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
         Log.i(com.github.tehras.overwatchstats.exts.TAG, "getItem $position")
 
         when (position) {
-            0 -> return FavoriteFragment.create()
-            else -> return FavoriteFragment.create()
+            0 -> return FavoriteOrRecentFragment.create(FavoriteOrRecent.FAVORITE)
+            else -> return FavoriteOrRecentFragment.create(FavoriteOrRecent.RECENT)
         }
     }
 
@@ -110,7 +141,8 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
         val v = super.onCreateView(inflater, container, savedInstanceState)
 
         Log.d(TAG, "HomeFragment on CreateView")
-        viewPager?.adapter = FragmentPager(fragmentManager, 2, this)
+        viewPager?.adapter = FragmentPager(childFragmentManager, 2, this)
+        viewPager?.setCurrentItem(0, false)
 
         return v
     }

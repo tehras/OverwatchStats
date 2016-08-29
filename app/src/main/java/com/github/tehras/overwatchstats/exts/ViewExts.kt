@@ -2,8 +2,10 @@ package com.github.tehras.overwatchstats.exts
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.widget.TextView
 
 /**
  * Created by tehras on 8/24/16.
@@ -15,6 +17,10 @@ fun View.getCenterX(): Int {
 
 fun View.getCenterY(): Int {
     return (this.top + this.bottom) / 2
+}
+
+fun TextView.setText(text: Int, context: Context) {
+    this.text = context.resources.getText(text)
 }
 
 
