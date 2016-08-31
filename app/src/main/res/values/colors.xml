@@ -28,4 +28,8 @@
     <color name="successGreen">#4CAF50</color>
     <color name="failureRed">#F44336</color>
     <color name="alertOrange">#FF9800</color>
+
+    <color name="gold">#FFC107</color>
+    <color name="silver">#BDBDBD</color>
+    <color name="bronze">#8D6E63</color>
 </resources>

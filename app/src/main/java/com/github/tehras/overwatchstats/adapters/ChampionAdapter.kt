@@ -1,6 +1,5 @@
 package com.github.tehras.overwatchstats.adapters
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,12 +19,8 @@ import java.util.*
  *
  * Recycler Adapter for Champion Display
  */
-class ChampionAdapter(var heroes: Heroes?) : RecyclerView.Adapter<ChampionAdapter.ChampHolder>() {
+class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> Unit) : RecyclerView.Adapter<ChampionAdapter.ChampHolder>() {
 
-    fun updateHeroes(heroes: Heroes?) {
-        this.heroes = heroes
-        notifyDataSetChanged()
-    }
 
     private var maxPlayed: Double? = 0.toDouble()
 
@@ -58,7 +53,8 @@ class ChampionAdapter(var heroes: Heroes?) : RecyclerView.Adapter<ChampionAdapte
         //lets draw the bar
         drawTheBar(hero, holder.bar, holder.overallLayout)
         holder.champName.text = hero?.name
-        holder.icon.setImageDrawable(holder.itemView.context.resources.getDrawable(getDynamicImage(hero, holder.itemView!!.context), null))
+
+        hero?.loadImage(context = holder.itemView.context, image = holder.icon)
 
         if (hero != null) {
             holder.champWinLoss.value.text = hero.winLosses()
@@ -66,6 +62,10 @@ class ChampionAdapter(var heroes: Heroes?) : RecyclerView.Adapter<ChampionAdapte
 
             holder.champGames.text = "${hero.played?.format(2)} hours"
             historyText(hero, holder.historyText, holder.historyIcon)
+
+            holder.itemView.setOnClickListener() {
+                hero.func(holder.itemView.getCenterX(), holder.itemView.getCenterY())
+            }
         } else {
             holder.champWinLoss.value.text = LOADING
             holder.champWinRate.value.text = LOADING
@@ -123,19 +123,6 @@ class ChampionAdapter(var heroes: Heroes?) : RecyclerView.Adapter<ChampionAdapte
             return "Updated $weeks week${weeks.isMultiple()} ago"
         }
 
-    }
-
-    private fun getDynamicImage(hero: Hero?, context: Context): Int {
-        val id = context.resources?.getIdentifier(getDynamicName(hero), "drawable", context.packageName)?.toInt() ?: 0
-
-        if (id.toInt() == 0)
-            return R.drawable.ic_soldier76
-        else
-            return id
-    }
-
-    private fun getDynamicName(hero: Hero?): String? {
-        return "ic_${hero?.name?.toLowerCase() ?: "bastion"}"
     }
 
     private fun drawTheBar(hero: Hero?, bar: LinearLayout?, itemView: View?) {

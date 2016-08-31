@@ -23,4 +23,8 @@
     <dimen name="bottom_toolbar_half_height">24dp</dimen>
     <dimen name="error_image_size">96dp</dimen>
     <dimen name="history_icon_size">16dp</dimen>
+    <dimen name="bar_height">6dp</dimen>
+
+    <dimen name="gold_radius">16dp</dimen>
+    <dimen name="champ_med_size">16sp</dimen>
 </resources>

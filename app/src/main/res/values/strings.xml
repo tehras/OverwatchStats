@@ -17,4 +17,5 @@
     <string name="favorites_no_favorites_added">No favorite players added yet! Please Search for a player and favorite in order to have the quick access to their profile!</string>
     <string name="favorites_no_recent_added">No recent players! Please search for a player and they\'ll automatically be added to this list!</string>
     <string name="suggestion_image">suggestion image</string>
+    <string name="champion_icon">Champion Icon</string>
 </resources>

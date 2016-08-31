@@ -13,6 +13,14 @@
             <enum name="Dark" value="1" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="DataWithBarView">
+        <attr name="rightLabel" format="string" />
+        <attr name="fieldLabel" format="string" />
+    </declare-styleable>
+    <declare-styleable name="FillerBar">
+        <attr name="android:color" />
+        <attr name="barPercentage" format="integer" />
+    </declare-styleable>
     <declare-styleable name="BottomToolbarButton">
         <attr name="android:src" />
         <attr name="android:text" />

@@ -16,6 +16,7 @@ import com.github.tehras.overwatchstats.models.heroes.Hero
 import com.github.tehras.overwatchstats.models.heroes.Heroes
 import com.github.tehras.overwatchstats.networking.*
 import com.github.tehras.overwatchstats.providers.user.HeaderProvider
+import com.github.tehras.overwatchstats.views.HeroLayoutView
 
 /**
  * Created by tehras on 8/18/16.
@@ -55,7 +56,10 @@ class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkRespons
     private fun updateAdapter(user: OWAPIUser) {
         //lets get the rest of the heroes...
         Log.d(TAG, "retrieved heroes")
-        adapter = ChampionAdapter(user.heroes as Heroes)
+        adapter = ChampionAdapter(user.heroes as Heroes) { cx, cy ->
+            heroLayout?.populate(hero = this, user = user)
+            heroLayout?.show()
+        }
         recyclerView?.adapter = adapter
 
         //start executing all responses
@@ -119,11 +123,14 @@ class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkRespons
     }
 
     private var provider: HeaderProvider? = null
+    private var heroLayout: HeroLayoutView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = inflater.inflate(R.layout.fragment_user_layout, container, false)
 
         provider = HeaderProvider(v, this)
+        heroLayout = v.findViewById(R.id.hero_layout) as HeroLayoutView?
+
         initRecyclerView(v)
 
         return v

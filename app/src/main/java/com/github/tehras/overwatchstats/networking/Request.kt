@@ -38,6 +38,7 @@ val generalStatsUrl = "/stats/general"
 //https://owapi.net/api/v2/u/SunDwarf-21353/heroes/general
 val generalHeroesUrl = "/heroes/general"
 //https://owapi.net/api/v2/u/Aurelius-1648/heroes/reinhardt
-val generalChampUrl = "/heroes/%s"
+val generalChampUrl = "/heroes/%s/general"
+val competativeChampUrl = "/heroes/%s/competative"
 
 
