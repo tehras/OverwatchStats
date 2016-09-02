@@ -1,11 +1,11 @@
 package com.github.tehras.overwatchstats
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import com.crashlytics.android.Crashlytics
 import com.github.tehras.overwatchstats.exts.*
 import com.github.tehras.overwatchstats.fragments.BaseFragment
 import com.github.tehras.overwatchstats.fragments.home.HomeFragment
@@ -13,6 +13,7 @@ import com.github.tehras.overwatchstats.networking.client
 import com.github.tehras.overwatchstats.views.BottomToolbarLayout
 import com.github.ybq.android.spinkit.SpinKitView
 import com.mancj.materialsearchbar.MaterialSearchBar
+import io.fabric.sdk.android.Fabric
 
 class MainActivity : BaseActivity() {
 
@@ -27,6 +28,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
 
         mFragmentContainer = findViewById(R.id.fragment_container)

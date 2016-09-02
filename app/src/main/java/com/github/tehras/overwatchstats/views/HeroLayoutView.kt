@@ -73,14 +73,9 @@ class HeroLayoutView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         champDeaths = findViewById(R.id.champ_deaths) as DataWithBarView
 
         fullChampView = findViewById(R.id.champ_view)
-
-        findViewById(R.id.background).setOnTouchListener { view, motionEvent ->
-            hide()
-            true
-        }
     }
 
-    fun populate(hero: Hero, user: OWAPIUser) {
+    fun populate(hero: Hero, user: OWAPIUser): HeroLayoutView {
         hero.loadImage(context, champIcon)
 
         champName.text = hero.name
@@ -93,7 +88,7 @@ class HeroLayoutView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         val color = context.resources.getColor(hero.getConfirmedType().color, null)
 
         champWinLoss.value.text = hero.winLosses()
-        champWinRate.value.text = "${hero.winPercentage().times(100).format(1)}%"
+        champWinRate.value.setWinPercentage(hero.winPercentage())
 
         champEliminations.setValueText("${(hero.generalStats?.eliminations ?: 0.toDouble())}")
                 .setBarWidth(hero.generalStats?.eliminations?.times(100)?.div(user.mostElims().toDouble())?.toInt() ?: 0).setBarColor(color)
@@ -121,10 +116,7 @@ class HeroLayoutView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
 
         champDeaths.setValueText("${hero.averageDeaths().format(2)}")
                 .setBarColor(color).setBarWidth(hero.averageDeaths().times(100).div(user.mostDeaths()).toInt())
-    }
 
-    fun show() {
-        this.visibility = View.VISIBLE
-        fullChampView.show()
+        return this
     }
 }

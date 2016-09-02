@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "../common.gradle"
 apply plugin: 'realm-android'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 24
@@ -10,8 +11,8 @@ android {
         applicationId "com.github.tehras.overwatchstats"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 100003
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -45,6 +46,8 @@ dependencies {
     compile "com.google.firebase:firebase-core:${project.ext.firebase_version}"
     compile "com.google.firebase:firebase-config:${project.ext.firebase_version}"
 
+    compile project(':activetouch')
+
     //loading images
     compile 'com.squareup.picasso:picasso:2.5.2'
     //material view
@@ -53,9 +56,13 @@ dependencies {
 
     //for image transformations
     compile 'jp.wasabeef:picasso-transformations:2.1.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+        transitive = true;
+    }
 }
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.google.gms.google-services'

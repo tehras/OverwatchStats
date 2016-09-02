@@ -1,6 +1,7 @@
 package com.github.tehras.overwatchstats.adapters
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import java.util.*
  *
  * Recycler Adapter for Champion Display
  */
-class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> Unit) : RecyclerView.Adapter<ChampionAdapter.ChampHolder>() {
+class ChampionAdapter(var heroes: Heroes?, var func: View.(hero: Hero) -> Unit) : RecyclerView.Adapter<ChampionAdapter.ChampHolder>() {
 
 
     private var maxPlayed: Double? = 0.toDouble()
@@ -48,6 +49,7 @@ class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> 
     private val LOADING: CharSequence? = "Loading"
 
     override fun onBindViewHolder(holder: ChampHolder, position: Int) {
+        Log.d(TAG, "onBindDviewHolder position - ${position}")
         val hero = heroes?.heroes?.get(position)
 
         //lets draw the bar
@@ -63,9 +65,7 @@ class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> 
             holder.champGames.text = "${hero.played?.format(2)} hours"
             historyText(hero, holder.historyText, holder.historyIcon)
 
-            holder.itemView.setOnClickListener() {
-                hero.func(holder.itemView.getCenterX(), holder.itemView.getCenterY())
-            }
+            holder.clickableLayout.func(hero)
         } else {
             holder.champWinLoss.value.text = LOADING
             holder.champWinRate.value.text = LOADING
@@ -160,6 +160,8 @@ class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> 
         lateinit var historyIcon: ImageView
         lateinit var historyText: TextView
 
+        lateinit var clickableLayout: View
+
         init {
             champName = itemView?.findViewById(R.id.champ_hero_name) as TextView
             champGames = itemView?.findViewById(R.id.champ_hero_games_played) as TextView
@@ -173,6 +175,8 @@ class ChampionAdapter(var heroes: Heroes?, var func: Hero.(cx: Int, cy: Int) -> 
 
             historyIcon = itemView?.findViewById(R.id.champ_hero_last_updated_icon) as ImageView
             historyText = itemView?.findViewById(R.id.champ_hero_last_updated) as TextView
+
+            clickableLayout = itemView?.findViewById(R.id.champ_hero_clickable_layout) as View
         }
     }
 

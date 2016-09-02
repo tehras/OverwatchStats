@@ -110,7 +110,7 @@ class HomeFragment : ViewPagerFragment(), FragmentPager.FragmentCallback, Search
         lastRecent = getRecents()
 
         val suggestions = ArrayList<String>()
-        lastRecent?.forEach { suggestions.add("${it._userKey}") }
+        lastRecent?.forEach { suggestions.add("${it.username}#${it.tag}") }
 
         return suggestions
     }

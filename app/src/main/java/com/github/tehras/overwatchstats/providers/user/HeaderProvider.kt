@@ -41,6 +41,7 @@ class HeaderProvider(val view: View, var provider: Provide) {
     private val TAG = "HeaderProvider"
 
     fun populateAccountHeaderData() {
+        Log.d(TAG, "populateAccountHeader")
         val user = provider.getUser()
 
         val avatar = user.generalStats?.overallStats?.avatar

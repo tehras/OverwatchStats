@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.tehras.activetouch.touchlisteners.ActiveTouchBehavior
 import com.github.tehras.overwatchstats.R
 import com.github.tehras.overwatchstats.adapters.ChampionAdapter
 import com.github.tehras.overwatchstats.exts.*
@@ -23,7 +24,18 @@ import com.github.tehras.overwatchstats.views.HeroLayoutView
  *
  * User display
  */
-class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkResponse {
+class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkResponse, ActiveTouchBehavior.ActiveTouchViewCallback {
+
+    override fun getView(o: Any?): View {
+        if (heroLayout == null)
+            heroLayout = HeroLayoutView(activity)
+
+        if (o is Hero)
+            return heroLayout!!.populate(hero = o, user = user)
+        else
+            return heroLayout!!
+    }
+
     override fun getUser(): OWAPIUser {
         return user
     }
@@ -53,20 +65,30 @@ class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkRespons
         }
     }
 
+    var heroLayout: HeroLayoutView? = null
+
+    fun addLongHolder(v: View?, hero: Hero) {
+        ActiveTouchBehavior.Builder(v!!, this.activity.findViewById(R.id.fragment_container) as ViewGroup)
+                .setContentView(this)
+                .setObject(hero)
+                .build(this.activity)
+    }
+
     private fun updateAdapter(user: OWAPIUser) {
         //lets get the rest of the heroes...
         Log.d(TAG, "retrieved heroes")
-        adapter = ChampionAdapter(user.heroes as Heroes) { cx, cy ->
-            heroLayout?.populate(hero = this, user = user)
-            heroLayout?.show()
+        adapter = ChampionAdapter(user.heroes as Heroes) { h ->
+            addLongHolder(this, h)
         }
+
         recyclerView?.adapter = adapter
 
         //start executing all responses
         if (needsRefresh) {
             needsRefresh = false
             user.heroes?.heroes?.forEach {
-                if (!(it.played?.isZero() ?: true))
+                Log.d(TAG, "updated - ${it.updated}")
+                if (!(it.played?.isZero() ?: true) && !it.updated)
                     Runner().champHeroRequest(user, getNewHero(it) ?: Hero(it.name ?: "", it.played ?: 0.toDouble()), this)
             }
         }
@@ -123,13 +145,11 @@ class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkRespons
     }
 
     private var provider: HeaderProvider? = null
-    private var heroLayout: HeroLayoutView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = inflater.inflate(R.layout.fragment_user_layout, container, false)
 
         provider = HeaderProvider(v, this)
-        heroLayout = v.findViewById(R.id.hero_layout) as HeroLayoutView?
 
         initRecyclerView(v)
 
