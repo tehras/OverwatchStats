@@ -126,22 +126,20 @@ class QuickPlayFragment : BaseFragment(), HeaderProvider.Provide, NetworkRespons
                 Runner().generalStatsRequest(user, true, object : NetworkResponse {
                     override fun onResponse(response: Response, request: Request) {
                         if (response.status == Response.ResponseStatus.SUCCESS && response.parsingObject is OWAPIUser && (response.parsingObject as OWAPIUser).generalStats != null) {
-                            getRealmInstance()?.singleTransaction {
-                                val generalStats = (response.parsingObject as OWAPIUser).generalStats
-                                generalStats?.addToRealm()
-
-                                user.generalStats = generalStats
-                                provider?.populateAccountHeaderData() //refresh
+                            (response.parsingObject as OWAPIUser).generalStats?.copyField() {
+                                user.generalStats = this
                             }
+                            provider?.populateAccountHeaderData() //refresh
                         }
                     }
                 })
             }
-        }
 
-        //lets get the champions..
-        if (user.heroes == null)
-            Runner().generalHeroesRequest(user, this)
+
+            //lets get the champions..
+            if (user.heroes == null)
+                Runner().generalHeroesRequest(user, this)
+        }
     }
 
     private var provider: HeaderProvider? = null

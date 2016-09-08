@@ -94,7 +94,7 @@ class UserFragment : ViewPagerFragment(), FragmentPager.FragmentCallback {
         if (user?.favorite ?: true)
             icon = R.drawable.ic_close_white
 
-        activity.showTwoItemToolbar(viewPager, icon, "Quick Play", R.drawable.ic_quick_play, "Competative", R.drawable.ic_competative, this)
+        activity.showTwoItemToolbar(viewPager, icon, "Competitive", R.drawable.ic_competative, "Quick Play", R.drawable.ic_quick_play, this)
                 ?.showHome(true)?.showSettings(true)
     }
 

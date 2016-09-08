@@ -1,6 +1,7 @@
 package com.github.tehras.overwatchstats.networking
 
 import android.os.AsyncTask
+import android.util.Log
 import com.github.tehras.overwatchstats.models.OWAPIUser
 import com.github.tehras.overwatchstats.models.User
 import com.github.tehras.overwatchstats.models.configChamps
@@ -38,7 +39,8 @@ fun Runner.generalStatsRequest(user: OWAPIUser, skipDb: Boolean, networkResponse
     if (foundUser != null) {
         networkResponse.onDbResponse(foundUser)
     } else {
-        this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalStatsUrl, user, networkResponse))
+        Log.d(TAG, "username ${user.username} ${user.tag}")
+        this.execute(Request(Request.Type.GET, baseOWAPIurl + formulateUser(user.username, user.tag) + generalStatsUrl, OWAPIUser(user.username, user.tag), networkResponse))
     }
 }
 

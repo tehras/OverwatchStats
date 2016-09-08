@@ -34,11 +34,11 @@ val hero: String = "hero/%s"
 val profile: String = "/profile"
 
 val baseOWAPIurl = "https://owapi.net/api/v2/u/"
-val generalStatsUrl = "/stats/general"
+val generalStatsUrl = "/stats/competitive"
 //https://owapi.net/api/v2/u/SunDwarf-21353/heroes/general
-val generalHeroesUrl = "/heroes/general"
+val generalHeroesUrl = "/heroes/competitive"
 //https://owapi.net/api/v2/u/Aurelius-1648/heroes/reinhardt
-val generalChampUrl = "/heroes/%s/general"
-val competativeChampUrl = "/heroes/%s/competative"
+val generalChampUrl = "/heroes/%s/competitive"
+val competativeChampUrl = "/heroes/%s/competitive"
 
 

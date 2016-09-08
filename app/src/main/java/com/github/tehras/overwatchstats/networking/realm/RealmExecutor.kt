@@ -33,7 +33,7 @@ fun cleanUpExtras(results: RealmResults<OWAPIUser>?) {
         results?.forEach {
             if (it._userKey.isNullOrEmpty()) {
                 getRealmInstance()?.singleTransaction { it.deleteFromRealm() }
-                results.remove(it)
+//                results.delete(it)
             }
         }
     }

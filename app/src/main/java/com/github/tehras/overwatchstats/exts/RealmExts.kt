@@ -52,11 +52,9 @@ fun <T : RealmModel> Realm.getAll(clazz: Class<T>): RealmResults<T>? {
     return this.getAll(clazz) { this }
 }
 
-fun <T : RealmModel> T.addToRealm() {
-    getRealmInstance()?.executeTransaction {
-        getRealmInstance()?.copyToRealmOrUpdate(this)
-        Log.d(REALM_TAG, "added new object ${this}")
-    }
+inline fun <T : RealmModel> T.addToRealm() {
+    getRealmInstance()?.copyToRealmOrUpdate(this@addToRealm)
+    Log.d(REALM_TAG, "added new object ${this}")
 }
 
 fun <S : RealmModel> S.copyField(func: S?.() -> Unit) {
@@ -65,22 +63,29 @@ fun <S : RealmModel> S.copyField(func: S?.() -> Unit) {
     }
 }
 
-fun <S : RealmModel> createObject(javaClass: Class<S>): S? {
+inline fun <S : RealmModel> createObject(javaClass: Class<S>): S? {
     return getRealmInstance()?.transaction { this.createObject(javaClass) }
 }
 
-fun <S : RealmModel> Realm.transaction(func: Realm.() -> S?): S? {
-    this.beginTransaction()
-    val o = this.func()
-    this.commitTransaction()
+inline fun <S : RealmModel> Realm.transaction(func: Realm.() -> S?): S? {
+    synchronized(this) {
+        this.beginTransaction()
+        val o = this.func()
+        this.commitTransaction()
 
-    return o
+        return o
+    }
 }
 
+@Synchronized
 fun Realm.singleTransaction(func: Realm.() -> Unit) {
-    this.beginTransaction()
-    this.func()
-    this.commitTransaction()
+    synchronized(this) {
+        Log.d(REALM_TAG, "beginTransaction")
+        this.beginTransaction()
+        this.func()
+        Log.d(REALM_TAG, "closeTransaction")
+        this.commitTransaction()
+    }
 }
 
 val REALM_TAG = "RealmExts"

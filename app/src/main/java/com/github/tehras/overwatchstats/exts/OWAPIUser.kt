@@ -14,7 +14,7 @@ import com.github.tehras.overwatchstats.models.heroes.Hero
 
 fun Hero.winLosses(): String {
     val won = this.generalStats?.gamesWon?.toInt() ?: 0
-    val losses = (this.generalStats?.gamesPlayed?.minus(this.generalStats?.gamesWon ?: 0.toDouble()))?.toInt()
+    val losses = (this.generalStats?.gamesPlayed?.toInt()?.minus(this.generalStats?.gamesWon?.toInt() ?: 0))
 
     return "${won}W/${losses}L"
 }
